@@ -19,8 +19,8 @@ module clock_logic(
     output reg chime            // Hourly chime signal (LED flash)
 );
 
-    // Chime counter (counts down from 5 to 0)
-    reg [2:0] chime_counter;
+    // Chime counter (counts down from 5 to 0) - 4 bits to accommodate values up to 5
+    reg [3:0] chime_counter;
     
     // Mode state machine
     // 0: Normal running mode
@@ -92,7 +92,7 @@ module clock_logic(
             // Chime starts 5 seconds before the hour (when seconds = 55 and minutes = 59)
             if (minutes == 8'd59 && seconds >= 8'd55 && adj_mode == 2'd0) begin
                 chime <= 1'b1;
-                chime_counter <= 8'd59 - seconds + 1; // Count down to hour
+                chime_counter <= 4'd5 - (seconds - 8'd55); // Count down from 5 to 0
             end
             else if (chime_counter > 0) begin
                 chime_counter <= chime_counter - 1'b1;

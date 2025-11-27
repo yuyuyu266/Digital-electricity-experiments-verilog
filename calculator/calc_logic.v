@@ -73,14 +73,25 @@ module calc_logic(
                     first_entry <= 1'b0;
                 end
                 else if (pending_op != 2'd0) begin
-                    // Execute previous operation first
+                    // Execute previous operation first and update result with new value
                     case (pending_op)
-                        2'd1: accumulator <= accumulator + {8'd0, num_input};
-                        2'd2: accumulator <= accumulator - {8'd0, num_input};
-                        2'd3: accumulator <= accumulator * {8'd0, num_input};
-                        default: accumulator <= accumulator;
+                        2'd1: begin 
+                            accumulator <= accumulator + {8'd0, num_input};
+                            result <= accumulator + {8'd0, num_input};
+                        end
+                        2'd2: begin 
+                            accumulator <= accumulator - {8'd0, num_input};
+                            result <= accumulator - {8'd0, num_input};
+                        end
+                        2'd3: begin 
+                            accumulator <= accumulator * {8'd0, num_input};
+                            result <= accumulator * {8'd0, num_input};
+                        end
+                        default: begin
+                            accumulator <= accumulator;
+                            result <= accumulator;
+                        end
                     endcase
-                    result <= accumulator;
                 end
                 pending_op <= 2'd1;  // Set add as pending
                 op_display <= 2'd1;
@@ -93,12 +104,23 @@ module calc_logic(
                 end
                 else if (pending_op != 2'd0) begin
                     case (pending_op)
-                        2'd1: accumulator <= accumulator + {8'd0, num_input};
-                        2'd2: accumulator <= accumulator - {8'd0, num_input};
-                        2'd3: accumulator <= accumulator * {8'd0, num_input};
-                        default: accumulator <= accumulator;
+                        2'd1: begin 
+                            accumulator <= accumulator + {8'd0, num_input};
+                            result <= accumulator + {8'd0, num_input};
+                        end
+                        2'd2: begin 
+                            accumulator <= accumulator - {8'd0, num_input};
+                            result <= accumulator - {8'd0, num_input};
+                        end
+                        2'd3: begin 
+                            accumulator <= accumulator * {8'd0, num_input};
+                            result <= accumulator * {8'd0, num_input};
+                        end
+                        default: begin
+                            accumulator <= accumulator;
+                            result <= accumulator;
+                        end
                     endcase
-                    result <= accumulator;
                 end
                 pending_op <= 2'd2;  // Set subtract as pending
                 op_display <= 2'd2;
@@ -111,12 +133,23 @@ module calc_logic(
                 end
                 else if (pending_op != 2'd0) begin
                     case (pending_op)
-                        2'd1: accumulator <= accumulator + {8'd0, num_input};
-                        2'd2: accumulator <= accumulator - {8'd0, num_input};
-                        2'd3: accumulator <= accumulator * {8'd0, num_input};
-                        default: accumulator <= accumulator;
+                        2'd1: begin 
+                            accumulator <= accumulator + {8'd0, num_input};
+                            result <= accumulator + {8'd0, num_input};
+                        end
+                        2'd2: begin 
+                            accumulator <= accumulator - {8'd0, num_input};
+                            result <= accumulator - {8'd0, num_input};
+                        end
+                        2'd3: begin 
+                            accumulator <= accumulator * {8'd0, num_input};
+                            result <= accumulator * {8'd0, num_input};
+                        end
+                        default: begin
+                            accumulator <= accumulator;
+                            result <= accumulator;
+                        end
                     endcase
-                    result <= accumulator;
                 end
                 pending_op <= 2'd3;  // Set multiply as pending
                 op_display <= 2'd3;

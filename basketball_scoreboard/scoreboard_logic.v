@@ -64,8 +64,10 @@ module scoreboard_logic(
                 reset_shot_clock <= 1'b1;
             end
             
-            // Team A scoring (when SW0 is low - countdown stopped)
-            if (!team_a_poss) begin
+            // Team A scoring (when SW0 is low AND SW7 is high - Team A just finished possession)
+            // Mutual exclusion: only one team can score at a time
+            if (!team_a_poss && team_b_poss) begin
+                // Team A scoring mode (Team B has possession, Team A can score)
                 if (add_1) begin
                     if (score_a < 8'd99) score_a <= score_a + 8'd1;
                 end
@@ -76,9 +78,9 @@ module scoreboard_logic(
                     if (score_a < 8'd97) score_a <= score_a + 8'd3;
                 end
             end
-            
-            // Team B scoring (when SW7 is low - countdown stopped)
-            if (!team_b_poss) begin
+            // Team B scoring (when SW7 is low AND SW0 is high - Team B just finished possession)
+            else if (!team_b_poss && team_a_poss) begin
+                // Team B scoring mode (Team A has possession, Team B can score)
                 if (add_1) begin
                     if (score_b < 8'd99) score_b <= score_b + 8'd1;
                 end
@@ -89,6 +91,8 @@ module scoreboard_logic(
                     if (score_b < 8'd97) score_b <= score_b + 8'd3;
                 end
             end
+            // When neither team has possession (!team_a_poss && !team_b_poss), no scoring allowed
+            // When both have possession (team_a_poss && team_b_poss), timers run but no scoring
         end
     end
 
